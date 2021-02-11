@@ -6,9 +6,20 @@ export const theme = createMuiTheme({
     fontSize: 12,
     h1: {
       // could customize the h1 variant as well
-    }
+    },
+    button: {
+      textTransform: "none",
+    },
   },
   palette: {
-    primary: { main: "#DF1B1B" }
-  }
+    primary: { main: "#3a8dff" },
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        margin: "20px",
+        padding: "10px 40px",
+      },
+    },
+  },
 });
