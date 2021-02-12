@@ -1,0 +1,43 @@
+.coverPhoto {
+  position: relative;
+  flex: 0.45;
+}
+
+.coverPhoto > img {
+  width: 100%;
+  height: 100%;
+}
+
+.coverPhoto > .overlap__content__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #3a8dff;
+  opacity: 85%;
+  padding: 40px;
+  background-image: linear-gradient(#3a8dff, #86b9ff);
+}
+
+.coverPhoto > .overlap__content__container > img {
+  width: 50px;
+}
+
+.coverPhoto > .overlap__content__container > p {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-top: 30px;
+  margin-bottom: 100px;
+}
+
+@media only screen and (max-width: 730px) {
+  .coverPhoto {
+    display: none;
+  }
+}

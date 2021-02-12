@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "./Signup.css";
-import signupImage from "../images/bg-img.png";
-import bubble from "../images/bubble.svg";
 import { Button, FormControl, TextField } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import CoverPhoto from "./CoverPhoto";
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const history = useHistory();
 
   const processSignup = (e) => {
     e.preventDefault();
@@ -17,17 +18,13 @@ function Signup() {
 
   return (
     <div className="signup">
-      <div className="image__container">
-        <img src={signupImage} />
-        <div className="overlap__content__container">
-          <img src={bubble} alt="bubble" />
-          <p>Converse with anyone with any language</p>
-        </div>
-      </div>
+      <CoverPhoto />
       <div className="text__area__container">
         <div className="login__message__container">
           <p>Already have an account?</p>
-          <Button variant="contained">Login</Button>
+          <Button variant="contained" onClick={() => history.push("/login")}>
+            Login
+          </Button>
         </div>
         <div className="form__container">
           <h4>Create an account.</h4>
@@ -81,7 +78,12 @@ function Signup() {
               margin="normal"
             />
           </FormControl>
-          <Button fullWidth={false} color="primary" variant="contained">
+          <Button
+            fullWidth={false}
+            color="primary"
+            variant="contained"
+            onClick={(e) => processSignup(e)}
+          >
             Create
           </Button>
         </div>
