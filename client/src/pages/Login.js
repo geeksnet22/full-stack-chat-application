@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Login.css";
+import "./LoginSignup.css";
 import { useHistory } from "react-router-dom";
 import CoverPhoto from "./CoverPhoto";
 import FormContainer from "./FormContainer";
@@ -15,7 +15,7 @@ function Login() {
   };
 
   return (
-    <div className="signup">
+    <div className="login">
       <CoverPhoto />
       <div className="text__area__container">
         <div className="login__message__container">

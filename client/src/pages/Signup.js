@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Signup.css";
+import "./LoginSignup.css";
 import { useHistory } from "react-router-dom";
 import CoverPhoto from "./CoverPhoto";
 import FormContainer from "./FormContainer";
