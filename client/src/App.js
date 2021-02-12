@@ -4,6 +4,7 @@ import { BrowserRouter, Redirect, Route } from "react-router-dom";
 import "./App.css";
 import Signup from "./pages/Signup";
 import { theme } from "./themes/theme";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Redirect to="/signup" />
           </Route>
           <Route path="/signup" component={Signup} />
+          <Route path="/login" component={Login} />
         </BrowserRouter>
       </ThemeProvider>
     </div>
