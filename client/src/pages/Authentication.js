@@ -1,5 +1,6 @@
 import { FormControl, TextField, Button, makeStyles } from "@material-ui/core";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import AuthenticationPhoto from "./AuthenticationPhoto";
 
 const useStyles = makeStyles((theme) => ({
@@ -53,13 +54,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Authentication() {
-  const [isSignupPage, setIsSignupPage] = useState(true);
+function Authentication({ isSignupPage }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const classes = useStyles();
+  const history = useHistory();
 
   const textInputLabelProps = {
     shrink: true,
@@ -76,7 +77,9 @@ function Authentication() {
             <Button
               color="secondary"
               variant="contained"
-              onClick={() => setIsSignupPage(!isSignupPage)}
+              onClick={() =>
+                history.push(isSignupPage ? "/login" : "/register")
+              }
             >
               Create account
             </Button>

@@ -11,9 +11,20 @@ function App() {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Route path="/">
-            <Redirect to="/authentication" />
+            <Redirect to="/register" />
           </Route>
-          <Route path="/authentication" component={Authentication} />
+          <Route
+            path="/register"
+            render={(props) => (
+              <Authentication {...props} isSignupPage={true} />
+            )}
+          />
+          <Route
+            path="/login"
+            render={(props) => (
+              <Authentication {...props} isSignupPage={false} />
+            )}
+          />
         </BrowserRouter>
       </ThemeProvider>
     </div>
