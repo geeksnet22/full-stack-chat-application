@@ -61,6 +61,11 @@ function Authentication() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const classes = useStyles();
 
+  const textInputLabelProps = {
+    shrink: true,
+    style: { color: "gray" },
+  };
+
   return (
     <div className={classes.authentication}>
       <AuthenticationPhoto />
@@ -88,10 +93,7 @@ function Authentication() {
                   color="primary"
                   defaultValue={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: { color: "gray" },
-                  }}
+                  InputLabelProps={textInputLabelProps}
                   margin="normal"
                 />
               )}
@@ -101,10 +103,7 @@ function Authentication() {
                 color="primary"
                 defaultValue={email}
                 onChange={(e) => setEmail(e.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                  style: { color: "gray" },
-                }}
+                InputLabelProps={textInputLabelProps}
                 margin="normal"
               />
               <TextField
@@ -113,10 +112,7 @@ function Authentication() {
                 color="primary"
                 defaultValue={password}
                 onChange={(e) => setPassword(e.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                  style: { color: "gray" },
-                }}
+                InputLabelProps={textInputLabelProps}
                 margin="normal"
               />
               {isSignupPage && (
@@ -126,10 +122,7 @@ function Authentication() {
                   color="primary"
                   defaultValue={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: { color: "gray" },
-                  }}
+                  InputLabelProps={textInputLabelProps}
                   margin="normal"
                 />
               )}
