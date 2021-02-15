@@ -73,7 +73,11 @@ function Authentication({ isSignupPage }) {
       <div className={classes.textAreaContainer}>
         <div className={classes.formContainer}>
           <div className={classes.messageContainer}>
-            <p className={classes.p}>Don't have an account?</p>
+            <p className={classes.p}>
+              {isSignupPage
+                ? "Already have an account"
+                : "Don't have an account?"}
+            </p>
             <Button
               color="secondary"
               variant="contained"
@@ -81,7 +85,7 @@ function Authentication({ isSignupPage }) {
                 history.push(isSignupPage ? "/login" : "/register")
               }
             >
-              Create account
+              {isSignupPage ? "Login" : "Create account"}
             </Button>
           </div>
           <div className={classes.formBody}>
