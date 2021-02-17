@@ -17,17 +17,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "20px",
     height: "100%",
-    justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      flex: 1,
+    },
   },
   formContainer: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginTop: "-100px",
+    justifyContent: "center",
     width: "100%",
-    [theme.breakpoints.down("sm")]: {
-      marginTop: "-10px",
-    },
+    height: "100%",
   },
   formBody: {
     display: "flex",
@@ -35,14 +35,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "60%",
     [theme.breakpoints.down("sm")]: {
-      width: "100%",
+      width: "80%",
     },
   },
   messageContainer: {
     display: "flex",
     alignItems: "center",
     alignSelf: "flex-end",
-    marginBottom: "100px",
   },
   p: {
     fontSize: "0.8rem",
@@ -71,23 +70,21 @@ function Authentication({ isSignupPage }) {
     <div className={classes.authentication}>
       <AuthenticationPhoto />
       <div className={classes.textAreaContainer}>
+        <div className={classes.messageContainer}>
+          <p className={classes.p}>
+            {isSignupPage
+              ? "Already have an account"
+              : "Don't have an account?"}
+          </p>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={() => history.push(isSignupPage ? "/login" : "/register")}
+          >
+            {isSignupPage ? "Login" : "Create account"}
+          </Button>
+        </div>
         <div className={classes.formContainer}>
-          <div className={classes.messageContainer}>
-            <p className={classes.p}>
-              {isSignupPage
-                ? "Already have an account"
-                : "Don't have an account?"}
-            </p>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={() =>
-                history.push(isSignupPage ? "/login" : "/register")
-              }
-            >
-              {isSignupPage ? "Login" : "Create account"}
-            </Button>
-          </div>
           <div className={classes.formBody}>
             <h4 className={classes.h4}>
               {isSignupPage ? "Create an account." : "Welcome back!"}
@@ -95,6 +92,7 @@ function Authentication({ isSignupPage }) {
             <FormControl fullWidth={true}>
               {isSignupPage && (
                 <TextField
+                  required={true}
                   label="Username"
                   type="text"
                   color="primary"
@@ -105,6 +103,7 @@ function Authentication({ isSignupPage }) {
                 />
               )}
               <TextField
+                required={true}
                 label="Email"
                 type="email"
                 color="primary"
@@ -114,6 +113,7 @@ function Authentication({ isSignupPage }) {
                 margin="normal"
               />
               <TextField
+                required={true}
                 label="Password"
                 type="password"
                 color="primary"
@@ -124,6 +124,7 @@ function Authentication({ isSignupPage }) {
               />
               {isSignupPage && (
                 <TextField
+                  required={true}
                   label="Confirm password"
                   type="password"
                   color="primary"
