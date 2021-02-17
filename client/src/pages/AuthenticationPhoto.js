@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import signupImage from "../images/bg-img.png";
 import bubble from "../images/bubble.svg";
@@ -35,8 +35,6 @@ const useStyles = makeStyles((theme) => ({
     width: "50px",
   },
   overlapContentContainerText: {
-    color: "#ffffff",
-    fontSize: "1.5rem",
     marginTop: "30px",
     marginBottom: "100px",
   },
@@ -57,9 +55,12 @@ function AuthenticationPhoto() {
           src={bubble}
           alt="bubble"
         />
-        <p className={classes.overlapContentContainerText}>
+        <Typography
+          className={classes.overlapContentContainerText}
+          variant="h3"
+        >
           Converse with anyone with any language
-        </p>
+        </Typography>
       </div>
     </div>
   );

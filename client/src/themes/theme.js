@@ -4,8 +4,17 @@ export const theme = createMuiTheme({
   typography: {
     fontFamily: '"Roboto"',
     fontSize: 12,
-    h1: {
-      // could customize the h1 variant as well
+    h3: {
+      fontSize: "1.5rem",
+      color: "#FFFFFF",
+    },
+    h4: {
+      fontSize: "1.5rem",
+      color: "gray",
+    },
+    body1: {
+      fontSize: "0.8rem",
+      color: "gray",
     },
     button: {
       textTransform: "none",

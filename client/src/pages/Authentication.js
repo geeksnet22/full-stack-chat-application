@@ -1,4 +1,10 @@
-import { FormControl, TextField, Button, makeStyles } from "@material-ui/core";
+import {
+  FormControl,
+  TextField,
+  Button,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthenticationPhoto from "./AuthenticationPhoto";
@@ -29,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
   },
+  formHeader: {
+    alignSelf: "flex-start",
+  },
   formBody: {
     display: "flex",
     flexDirection: "column",
@@ -38,24 +47,10 @@ const useStyles = makeStyles((theme) => ({
       width: "80%",
     },
   },
-  form: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
   messageContainer: {
     display: "flex",
     alignItems: "center",
     alignSelf: "flex-end",
-  },
-  p: {
-    fontSize: "0.8rem",
-    color: "gray",
-  },
-  h4: {
-    fontSize: "1.5rem",
-    alignSelf: "flex-start",
   },
 }));
 
@@ -64,17 +59,27 @@ function Authentication({ isSignupPage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showFormErrors, setShowFormErrors] = useState(false);
   const classes = useStyles();
   const history = useHistory();
+
+  const showUsernameError = showFormErrors && username.length === 0;
+  const showEmailError =
+    showFormErrors &&
+    !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email.toLowerCase()
+    );
+  const showPasswordError = showFormErrors && password.length < 6;
+  const showCofirmPasswordError =
+    showFormErrors && password.length > 0 && password !== confirmPassword;
 
   const textInputLabelProps = {
     shrink: true,
     style: { color: "gray" },
   };
 
-  const submitForm = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const submitForm = () => {
+    setShowFormErrors(true);
   };
 
   return (
@@ -82,11 +87,11 @@ function Authentication({ isSignupPage }) {
       <AuthenticationPhoto />
       <div className={classes.textAreaContainer}>
         <div className={classes.messageContainer}>
-          <p className={classes.p}>
+          <Typography variant="body1">
             {isSignupPage
-              ? "Already have an account"
+              ? "Already have an account?"
               : "Don't have an account?"}
-          </p>
+          </Typography>
           <Button
             color="secondary"
             variant="contained"
@@ -97,67 +102,78 @@ function Authentication({ isSignupPage }) {
         </div>
         <div className={classes.formContainer}>
           <div className={classes.formBody}>
-            <h4 className={classes.h4}>
+            <Typography className={classes.formHeader} variant="h4">
               {isSignupPage ? "Create an account." : "Welcome back!"}
-            </h4>
-            <form className={classes.form}>
-              <FormControl fullWidth={true}>
-                {isSignupPage && (
-                  <TextField
-                    required
-                    label="Username"
-                    type="text"
-                    color="primary"
-                    defaultValue={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    InputLabelProps={textInputLabelProps}
-                    margin="normal"
-                  />
-                )}
+            </Typography>
+            <FormControl fullWidth={true}>
+              {isSignupPage && (
                 <TextField
                   required
-                  label="Email"
-                  type="email"
+                  error={showUsernameError}
+                  helperText={
+                    showUsernameError ? "Username must not be empty" : ""
+                  }
+                  label="Username"
+                  type="text"
                   color="primary"
-                  defaultValue={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  defaultValue={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   InputLabelProps={textInputLabelProps}
                   margin="normal"
                 />
+              )}
+              <TextField
+                required
+                error={showEmailError}
+                helperText={showEmailError ? "Email format not valid" : ""}
+                label="Email"
+                type="email"
+                color="primary"
+                defaultValue={email}
+                onChange={(e) => setEmail(e.target.value)}
+                InputLabelProps={textInputLabelProps}
+                margin="normal"
+              />
+              <TextField
+                required
+                error={showPasswordError}
+                helperText={
+                  showPasswordError ? "Must be minimum 6 characters" : ""
+                }
+                label="Password"
+                type="password"
+                color="primary"
+                defaultValue={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputLabelProps={textInputLabelProps}
+                margin="normal"
+              />
+              {isSignupPage && (
                 <TextField
                   required
-                  label="Password"
+                  error={showCofirmPasswordError}
+                  helperText={
+                    showCofirmPasswordError && "Paswords do not match"
+                  }
+                  label="Confirm password"
                   type="password"
                   color="primary"
-                  defaultValue={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  defaultValue={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   InputLabelProps={textInputLabelProps}
                   margin="normal"
+                  inputProps={{ maxLength: 6 }}
                 />
-                {isSignupPage && (
-                  <TextField
-                    required
-                    label="Confirm password"
-                    type="password"
-                    color="primary"
-                    defaultValue={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    InputLabelProps={textInputLabelProps}
-                    margin="normal"
-                    inputProps={{ maxLength: 6 }}
-                  />
-                )}
-              </FormControl>
-              <Button
-                type="submit"
-                fullWidth={false}
-                color="primary"
-                variant="contained"
-                onClick={(e) => submitForm(e)}
-              >
-                {isSignupPage ? "Create" : "Login"}
-              </Button>
-            </form>
+              )}
+            </FormControl>
+            <Button
+              fullWidth={false}
+              color="primary"
+              variant="contained"
+              onClick={submitForm}
+            >
+              {isSignupPage ? "Create" : "Login"}
+            </Button>
           </div>
         </div>
       </div>
