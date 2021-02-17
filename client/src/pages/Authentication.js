@@ -38,6 +38,12 @@ const useStyles = makeStyles((theme) => ({
       width: "80%",
     },
   },
+  form: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
   messageContainer: {
     display: "flex",
     alignItems: "center",
@@ -66,6 +72,11 @@ function Authentication({ isSignupPage }) {
     style: { color: "gray" },
   };
 
+  const submitForm = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   return (
     <div className={classes.authentication}>
       <AuthenticationPhoto />
@@ -89,60 +100,64 @@ function Authentication({ isSignupPage }) {
             <h4 className={classes.h4}>
               {isSignupPage ? "Create an account." : "Welcome back!"}
             </h4>
-            <FormControl fullWidth={true}>
-              {isSignupPage && (
+            <form className={classes.form}>
+              <FormControl fullWidth={true}>
+                {isSignupPage && (
+                  <TextField
+                    required
+                    label="Username"
+                    type="text"
+                    color="primary"
+                    defaultValue={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    InputLabelProps={textInputLabelProps}
+                    margin="normal"
+                  />
+                )}
                 <TextField
-                  required={true}
-                  label="Username"
-                  type="text"
+                  required
+                  label="Email"
+                  type="email"
                   color="primary"
-                  defaultValue={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  defaultValue={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   InputLabelProps={textInputLabelProps}
                   margin="normal"
                 />
-              )}
-              <TextField
-                required={true}
-                label="Email"
-                type="email"
-                color="primary"
-                defaultValue={email}
-                onChange={(e) => setEmail(e.target.value)}
-                InputLabelProps={textInputLabelProps}
-                margin="normal"
-              />
-              <TextField
-                required={true}
-                label="Password"
-                type="password"
-                color="primary"
-                defaultValue={password}
-                onChange={(e) => setPassword(e.target.value)}
-                InputLabelProps={textInputLabelProps}
-                margin="normal"
-              />
-              {isSignupPage && (
                 <TextField
-                  required={true}
-                  label="Confirm password"
+                  required
+                  label="Password"
                   type="password"
                   color="primary"
-                  defaultValue={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  defaultValue={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   InputLabelProps={textInputLabelProps}
                   margin="normal"
                 />
-              )}
-            </FormControl>
-            <Button
-              fullWidth={false}
-              color="primary"
-              variant="contained"
-              onClick={() => {}}
-            >
-              {isSignupPage ? "Create" : "Login"}
-            </Button>
+                {isSignupPage && (
+                  <TextField
+                    required
+                    label="Confirm password"
+                    type="password"
+                    color="primary"
+                    defaultValue={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    InputLabelProps={textInputLabelProps}
+                    margin="normal"
+                    inputProps={{ maxLength: 6 }}
+                  />
+                )}
+              </FormControl>
+              <Button
+                type="submit"
+                fullWidth={false}
+                color="primary"
+                variant="contained"
+                onClick={(e) => submitForm(e)}
+              >
+                {isSignupPage ? "Create" : "Login"}
+              </Button>
+            </form>
           </div>
         </div>
       </div>
