@@ -6,14 +6,15 @@ import bubble from "../images/bubble.svg";
 const useStyles = makeStyles((theme) => ({
   authenticationPhoto: {
     position: "relative",
-    flex: "0.45",
+    width: "60.71vh",
+    backgroundColor: "red",
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
   authenticationPhotoImage: {
-    width: "100%",
     height: "100%",
+    objectFit: "contain",
   },
   overlapContentContainer: {
     position: "absolute",

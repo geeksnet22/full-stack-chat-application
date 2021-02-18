@@ -14,11 +14,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     height: "100%",
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   textAreaContainer: {
-    flex: "0.55",
     display: "flex",
+    flex: 1,
     flexDirection: "column",
     alignItems: "center",
     padding: "20px",
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     width: "100%",
     height: "100%",
+    maxWidth: "600px",
   },
   formHeader: {
     alignSelf: "flex-start",
