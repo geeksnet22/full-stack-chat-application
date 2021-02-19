@@ -29,6 +29,7 @@ export const theme = createMuiTheme({
       root: {
         margin: "20px",
         padding: "10px 40px",
+        alignSelf: "center",
       },
     },
   },

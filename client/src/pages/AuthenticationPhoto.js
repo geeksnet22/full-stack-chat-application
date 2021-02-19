@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme) => ({
   authenticationPhoto: {
     position: "relative",
     width: "60.71vh",
-    backgroundColor: "red",
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
@@ -29,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     backgroundColor: "#3a8dff",
     opacity: "85%",
-    padding: "40px",
     backgroundImage: "linear-gradient('#3a8dff', '#86b9ff')",
   },
   overlapContentContainerImage: {
