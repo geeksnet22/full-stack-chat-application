@@ -4,13 +4,12 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const userRouter = require("./routes/users");
 
-mongoose.connect(
-  "mongodb+srv://guri22:Shlaee13!!@cluster0.hkxgn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  { useNewUrlParser: true }
-);
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 
 const { json, urlencoded } = express;
 
