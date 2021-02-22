@@ -19,7 +19,12 @@ router.post("/register", (req, res, next) => {
     .then((user) => {
       if (user) {
         return res.status(409).json({
-          message: "Email and/or username already exist",
+          message:
+            user.username === req.body.username && user.email === req.body.email
+              ? "Username and email already exist"
+              : user.username === req.body.username
+              ? "Username already exists"
+              : "Email already exists",
         });
       } else {
         bcrypt.hash(req.body.password, 10, (err, hash) => {
