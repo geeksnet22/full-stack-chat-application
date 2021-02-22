@@ -12,12 +12,12 @@ router.post("/register", (req, res, next) => {
       message: "Password must be more than 6 digits",
     });
   }
-  User.find({
+  User.findOne({
     $or: [{ username: req.body.username }, { email: req.body.email }],
   })
     .exec()
     .then((user) => {
-      if (user.length >= 1) {
+      if (user) {
         return res.status(409).json({
           message: "Email and/or username already exist",
         });
@@ -38,8 +38,12 @@ router.post("/register", (req, res, next) => {
               .save()
               .then((result) => {
                 console.log(result);
+                const token = jwt.sign({ userId: user._id }, "SECRET_KEY", {
+                  expiresIn: "7d",
+                });
                 res.status(201).json({
                   message: "User created",
+                  token: token,
                 });
               })
               .catch((error) => {
@@ -55,28 +59,24 @@ router.post("/register", (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-  User.find({ email: req.body.email })
+  User.findOne({ email: req.body.email })
     .exec()
     .then((user) => {
-      if (user.length < 1) {
+      if (!user) {
         return res.status(401).json({
           message: "Auth failed",
         });
       }
-      bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (err) {
           return res.status(401).json({
             message: "Auth failed",
           });
         }
         if (result) {
-          const token = jwt.sign(
-            { email: user[0].email, userId: user[0]._id },
-            "SECRET_KEY",
-            {
-              expiresIn: "1h",
-            }
-          );
+          const token = jwt.sign({ userId: user._id }, "SECRET_KEY", {
+            expiresIn: "7d",
+          });
           return res.status(200).json({
             message: "Auth successful",
             token: token,
