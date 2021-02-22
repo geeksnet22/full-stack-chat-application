@@ -33,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
   formHeader: {
     alignSelf: "flex-start",
   },
+  form: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
   messageContainer: {
     display: "flex",
     alignItems: "center",
@@ -122,13 +127,7 @@ function Authentication({ isSignupPage }) {
           <Typography className={classes.formHeader} variant="h4">
             {isSignupPage ? "Create an account." : "Welcome back!"}
           </Typography>
-          <form
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <form className={classes.form}>
             {isSignupPage && (
               <TextField
                 required
