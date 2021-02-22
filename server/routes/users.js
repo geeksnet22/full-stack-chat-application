@@ -41,6 +41,7 @@ router.post("/register", (req, res, next) => {
                 const token = jwt.sign({ userId: user._id }, "SECRET_KEY", {
                   expiresIn: "7d",
                 });
+                res.cookie("token", token, { httpOnly: true });
                 res.status(201).json({
                   message: "User created",
                   token: token,
@@ -77,6 +78,7 @@ router.post("/login", (req, res, next) => {
           const token = jwt.sign({ userId: user._id }, "SECRET_KEY", {
             expiresIn: "7d",
           });
+          res.cookie("token", token, { httpOnly: true });
           return res.status(200).json({
             message: "Auth successful",
             token: token,
