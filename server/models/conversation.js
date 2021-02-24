@@ -2,16 +2,7 @@ const mongoose = require("mongoose");
 
 const conversationSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  participant1: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  participant2: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  participants: [{ type: String, ref: "User" }],
 });
 
 module.exports = mongoose.model("Conversation", conversationSchema);

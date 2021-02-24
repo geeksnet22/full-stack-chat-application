@@ -7,28 +7,28 @@ const conversation = require("../models/conversation");
 const Conversation = require("../models/conversation");
 
 router.post("/", checkAuth, (req, res, next) => {
-  const participant1 = mongoose.Types.ObjectId(req.body.participant1);
-  const participant2 = mongoose.Types.ObjectId(req.body.participant2);
+  const participants = req.body.participants.map((participant) =>
+    mongoose.Types.ObjectId(participant)
+  );
   Conversation.findOne({
-    $or: [
-      { participant1: participant1, participant2: participant2 },
-      { participant1: participant2, participant2: participant1 },
-    ],
+    participants: { $all: participants },
+    participants: { $size: participants.length },
   }).then((doc) => {
     if (doc) {
-      return res.status(202).json({
-        conversationId: doc._id,
+      return res.status(409).json({
+        message: "Conversation already exists",
+        createConversation: {
+          conversationId: doc._id,
+        },
       });
     }
     const conversation = new Conversation({
       _id: new mongoose.Types.ObjectId(),
-      participant1: participant1,
-      participant2: participant2,
+      participants: participants,
     });
     conversation
       .save()
       .then((result) => {
-        console.log(result);
         res.status(201).json({
           message: "Conversation created",
           createConversation: {
@@ -37,7 +37,6 @@ router.post("/", checkAuth, (req, res, next) => {
         });
       })
       .catch((err) => {
-        console.log(err);
         res.status(500).json({
           error: err,
         });
@@ -46,29 +45,24 @@ router.post("/", checkAuth, (req, res, next) => {
 });
 
 router.get("/:userId", checkAuth, (req, res, next) => {
-  const userId = req.params.userId;
   Conversation.find({
-    $or: [
-      { participant1: mongoose.Types.ObjectId(userId) },
-      { participant2: mongoose.Types.ObjectId(userId) },
-    ],
+    participants: mongoose.Types.ObjectId(req.params.userId),
   })
-    .populate("participant1")
-    .populate("participant2")
+    .select("_id participants")
+    .populate("participants")
     .exec()
-    .then((docs) =>
+    .then((conversations) =>
       res.status(200).json({
-        conversations: docs.map((doc) => ({
-          _id: doc._id,
-          user:
-            doc.participant1 === mongoose.Types.ObjectId(userId)
-              ? doc.participant2
-              : doc.participant1,
+        conversations: conversations.map((conversation) => ({
+          _id: conversation._id,
+          participants: conversation.participants.map((participant) => ({
+            _id: participant._id,
+            username: participant.username,
+          })),
         })),
       })
     )
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         error: err,
       });

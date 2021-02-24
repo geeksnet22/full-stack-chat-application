@@ -96,14 +96,11 @@ router.post("/login", (req, res, next) => {
 
 router.get("/", (req, res, next) => {
   User.find({ username: { $regex: req.query.username, $options: "i" } })
+    .select("_id username")
     .exec()
     .then((users) =>
       res.status(200).json({
-        users: users.map((user) => ({
-          _id: user._id,
-          username: user.username,
-          email: user.email,
-        })),
+        users: users,
       })
     )
     .catch((err) => {
