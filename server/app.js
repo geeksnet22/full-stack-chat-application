@@ -8,6 +8,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const userRouter = require("./routes/users");
+const messageRouter = require("./routes/messages");
+const conversationRouter = require("./routes/conversations");
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 
@@ -22,6 +24,8 @@ app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
 app.use("/users", userRouter);
+app.use("/messages", messageRouter);
+app.use("/conversations", conversationRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

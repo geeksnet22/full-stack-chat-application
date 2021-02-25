@@ -42,7 +42,6 @@ router.post("/register", (req, res, next) => {
             user
               .save()
               .then((result) => {
-                console.log(result);
                 const token = jwt.sign({ userId: user._id }, "SECRET_KEY", {
                   expiresIn: "7d",
                 });
@@ -53,7 +52,6 @@ router.post("/register", (req, res, next) => {
                 });
               })
               .catch((error) => {
-                console.log(error);
                 res.status(500).json({
                   error: error,
                 });
@@ -93,9 +91,19 @@ router.post("/login", (req, res, next) => {
           message: "Auth failed",
         });
       });
-    })
+    });
+});
+
+router.get("/", (req, res, next) => {
+  User.find({ username: { $regex: req.query.username, $options: "i" } })
+    .select("_id username")
+    .exec()
+    .then((users) =>
+      res.status(200).json({
+        users: users,
+      })
+    )
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         error: err,
       });
