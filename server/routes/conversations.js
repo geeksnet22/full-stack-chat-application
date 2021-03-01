@@ -11,8 +11,7 @@ router.post("/", checkAuth, (req, res, next) => {
     mongoose.Types.ObjectId(participant)
   );
   Conversation.findOne({
-    participants: { $all: participants },
-    participants: { $size: participants.length },
+    participants: { $all: participants, $size: participants.length },
   }).then((doc) => {
     if (doc) {
       return res.status(409).json({
@@ -62,9 +61,9 @@ router.get("/:userId", checkAuth, (req, res, next) => {
         })),
       })
     )
-    .catch((err) => {
+    .catch((error) => {
       res.status(500).json({
-        error: err,
+        error: error,
       });
     });
 });
