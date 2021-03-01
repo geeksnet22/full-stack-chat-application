@@ -17,7 +17,6 @@ router.post("/", checkAuth, (req, res, next) => {
   message
     .save()
     .then((result) => {
-      console.log(result);
       res.status(201).json({
         message: "Create message successful",
         createMessage: {
@@ -26,7 +25,6 @@ router.post("/", checkAuth, (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         error: err,
       });
@@ -52,7 +50,6 @@ router.get("/:conversationId", checkAuth, (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         error: err,
       });
