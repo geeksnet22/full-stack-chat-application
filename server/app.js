@@ -6,6 +6,7 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
+var cors = require("cors");
 
 const userRouter = require("./routes/users");
 const messageRouter = require("./routes/messages");
@@ -16,6 +17,7 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 const { json, urlencoded } = express;
 
 var app = express();
+app.use(cors());
 
 app.use(logger("dev"));
 app.use(json());
