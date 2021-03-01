@@ -48,6 +48,11 @@ router.post("/register", (req, res, next) => {
                 res.cookie("token", token, { httpOnly: true });
                 res.status(201).json({
                   message: "User created",
+                  user: {
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                  },
                   token: token,
                 });
               })
@@ -84,6 +89,11 @@ router.post("/login", (req, res, next) => {
           res.cookie("token", token, { httpOnly: true });
           return res.status(200).json({
             message: "Auth successful",
+            user: {
+              _id: user._id,
+              username: user.username,
+              email: user.email,
+            },
             token: token,
           });
         }
