@@ -38,13 +38,17 @@ function ChatItem({
   username,
   lastMessage,
   setConversationId,
+  setUsername,
 }) {
   const classes = useStyles();
 
   return (
     <div
       className={classes.chatItem}
-      onClick={() => setConversationId(conversationId)}
+      onClick={() => {
+        setConversationId(conversationId);
+        setUsername(username);
+      }}
     >
       <Avatar src={imageURL} />
       <div className={classes.textAreaContainer}>

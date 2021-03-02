@@ -38,9 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Messages({ conversationId, currentUser }) {
+function Messages({ conversationId, username, currentUser }) {
   const [messages, setMessages] = useState([]);
-  const [user, setUser] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -53,18 +52,6 @@ function Messages({ conversationId, currentUser }) {
           setMessages(result.data.messages);
           messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
         })
-        .catch((err) => console.log(err));
-      axios
-        .get(`/conversations/${currentUser._id}`)
-        .then((result) =>
-          setUser(
-            result.data.conversations
-              .filter((conversation) => conversation._id === conversationId)[0]
-              .participants.filter(
-                (participant) => participant._id !== currentUser._id
-              )[0]
-          )
-        )
         .catch((error) => console.log(error));
     }
   }, [conversationId, currentUser?._id]);
@@ -87,7 +74,7 @@ function Messages({ conversationId, currentUser }) {
     <div className={classes.messages}>
       {conversationId && (
         <div className={classes.header}>
-          <Typography variant="h2">{user?.username}</Typography>
+          <Typography variant="h2">{username}</Typography>
         </div>
       )}
       <div className={classes.messagesContainer}>

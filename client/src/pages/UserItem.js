@@ -23,11 +23,17 @@ function UserItem({ currentUser, user, selectUser }) {
     axios
       .post("/conversations", { participants: [user._id, currentUser._id] })
       .then((response) =>
-        selectUser(response.data.createConversation.conversationId)
+        selectUser(
+          response.data.createConversation.conversationId,
+          user.username
+        )
       )
       .catch((error) =>
         error.response.status === 409
-          ? selectUser(error.response.data.createConversation.conversationId)
+          ? selectUser(
+              error.response.data.createConversation.conversationId,
+              user.username
+            )
           : console.log(error)
       );
   return (

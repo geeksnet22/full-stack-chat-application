@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Chats({ currentUser, setConversationId }) {
+function Chats({ currentUser, setConversationId, setUsername }) {
   const [userSearch, setUserSearch] = useState("");
   const [showUsers, setShowUsers] = useState(false);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -68,10 +68,11 @@ function Chats({ currentUser, setConversationId }) {
       .catch((error) => console.log(error));
   };
 
-  const selectUser = (conversationId) => {
+  const selectUser = (conversationId, username) => {
     setUserSearch("");
     setShowUsers(false);
     setConversationId(conversationId);
+    setUsername(username);
   };
 
   return (
@@ -98,7 +99,9 @@ function Chats({ currentUser, setConversationId }) {
                 key={user._id}
                 currentUser={currentUser}
                 user={user}
-                selectUser={(conversationId) => selectUser(conversationId)}
+                selectUser={(conversationId, username) =>
+                  selectUser(conversationId, username)
+                }
               />
             ))
           : conversations
@@ -121,6 +124,7 @@ function Chats({ currentUser, setConversationId }) {
                     }
                     lastMessage={conversation.lastMessage}
                     setConversationId={setConversationId}
+                    setUsername={setUsername}
                   />
                 );
               })}

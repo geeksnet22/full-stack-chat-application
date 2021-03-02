@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ChatWindow({ currentUser }) {
   const [conversationId, setConversationId] = useState(null);
+  const [username, setUsername] = useState(null);
   const classes = useStyles();
 
   return (
@@ -24,9 +25,16 @@ function ChatWindow({ currentUser }) {
           setConversationId={(conversationId) =>
             setConversationId(conversationId)
           }
+          setUsername={(username) => setUsername(username)}
         />
       )}
-      {<Messages conversationId={conversationId} currentUser={currentUser} />}
+      {
+        <Messages
+          conversationId={conversationId}
+          username={username}
+          currentUser={currentUser}
+        />
+      }
     </div>
   );
 }
