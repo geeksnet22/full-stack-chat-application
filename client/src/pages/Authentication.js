@@ -1,6 +1,7 @@
 import { TextField, Button, makeStyles, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 import AuthenticationPhoto from "./AuthenticationPhoto";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Authentication({ isSignupPage }) {
+function Authentication({ isSignupPage, setCurrentUser }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -72,7 +73,7 @@ function Authentication({ isSignupPage }) {
       password: "",
       confirmPassword: "",
     };
-    if (username.length === 0) {
+    if (isSignupPage && username.length === 0) {
       isValid = false;
       tempErrors["username"] = "Username must not be empty";
     }
@@ -89,7 +90,7 @@ function Authentication({ isSignupPage }) {
       isValid = false;
       tempErrors["password"] = "Password must be more than 6 characters";
     }
-    if (password !== confirmPassword) {
+    if (isSignupPage && password !== confirmPassword) {
       isValid = false;
       tempErrors["confirmPassword"] = "Passwords do not match";
     }
@@ -101,8 +102,44 @@ function Authentication({ isSignupPage }) {
     e.preventDefault();
     e.stopPropagation();
     const isFormValid = validateForm();
-    // if the form is valid, send request to back end and show appropriate
-    // error messages if needed
+    if (isFormValid) {
+      if (isSignupPage) {
+        axios
+          .post("/users/register", {
+            email: email,
+            username: username,
+            password: password,
+          })
+          .then((response) => {
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            setCurrentUser(response.data.user);
+          })
+          .catch((error) =>
+            setErrors({
+              ...errors,
+              username: "Username or email already exists",
+              email: "Username or email already exists",
+            })
+          );
+      } else {
+        axios
+          .post("/users/login", {
+            email: email,
+            password: password,
+          })
+          .then((response) => {
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            setCurrentUser(response.data.user);
+          })
+          .catch((error) =>
+            setErrors({
+              ...errors,
+              email: "Incorrent email or password",
+              password: "Incorrect email or password",
+            })
+          );
+      }
+    }
   };
 
   return (

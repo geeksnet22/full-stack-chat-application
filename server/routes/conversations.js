@@ -11,8 +11,7 @@ router.post("/", checkAuth, (req, res, next) => {
     mongoose.Types.ObjectId(participant)
   );
   Conversation.findOne({
-    participants: { $all: participants },
-    participants: { $size: participants.length },
+    participants: { $all: participants, $size: participants.length },
   }).then((doc) => {
     if (doc) {
       return res.status(409).json({
@@ -25,6 +24,7 @@ router.post("/", checkAuth, (req, res, next) => {
     const conversation = new Conversation({
       _id: new mongoose.Types.ObjectId(),
       participants: participants,
+      lastMessage: null,
     });
     conversation
       .save()
@@ -50,6 +50,7 @@ router.get("/:userId", checkAuth, (req, res, next) => {
   })
     .select("_id participants")
     .populate("participants")
+    .populate("lastMessage")
     .exec()
     .then((conversations) =>
       res.status(200).json({
@@ -59,12 +60,13 @@ router.get("/:userId", checkAuth, (req, res, next) => {
             _id: participant._id,
             username: participant.username,
           })),
+          lastMessage: conversation.lastMessage,
         })),
       })
     )
-    .catch((err) => {
+    .catch((error) => {
       res.status(500).json({
-        error: err,
+        error: error,
       });
     });
 });
