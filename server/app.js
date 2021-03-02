@@ -16,7 +16,7 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 
 const { json, urlencoded } = express;
 
-var app = express();
+const app = express();
 app.use(cors());
 
 app.use(logger("dev"));

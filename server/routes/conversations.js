@@ -24,6 +24,7 @@ router.post("/", checkAuth, (req, res, next) => {
     const conversation = new Conversation({
       _id: new mongoose.Types.ObjectId(),
       participants: participants,
+      lastMessage: null,
     });
     conversation
       .save()
@@ -49,6 +50,7 @@ router.get("/:userId", checkAuth, (req, res, next) => {
   })
     .select("_id participants")
     .populate("participants")
+    .populate("lastMessage")
     .exec()
     .then((conversations) =>
       res.status(200).json({
@@ -58,6 +60,7 @@ router.get("/:userId", checkAuth, (req, res, next) => {
             _id: participant._id,
             username: participant.username,
           })),
+          lastMessage: conversation.lastMessage,
         })),
       })
     )

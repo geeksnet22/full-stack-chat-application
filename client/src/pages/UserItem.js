@@ -19,24 +19,19 @@ const useStyles = makeStyles((theme) => ({
 function UserItem({ currentUser, user, selectUser }) {
   const classes = useStyles();
 
+  const handleClick = () =>
+    axios
+      .post("/conversations", { participants: [user._id, currentUser._id] })
+      .then((response) =>
+        selectUser(response.data.createConversation.conversationId)
+      )
+      .catch((error) =>
+        error.response.status === 409
+          ? selectUser(error.response.data.createConversation.conversationId)
+          : console.log(error)
+      );
   return (
-    <div
-      className={classes.userItem}
-      onClick={() => {
-        axios
-          .post("/conversations", { participants: [user._id, currentUser._id] })
-          .then((response) =>
-            selectUser(response.data.createConversation.conversationId)
-          )
-          .catch((error) =>
-            error.response.status === 409
-              ? selectUser(
-                  error.response.data.createConversation.conversationId
-                )
-              : console.log(error)
-          );
-      }}
-    >
+    <div className={classes.userItem} onClick={handleClick}>
       <Avatar src={user.imageURL} />
       <Typography variant="h5">{`\xa0\xa0${user.username}`}</Typography>
     </div>

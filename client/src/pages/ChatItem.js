@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Avatar, Typography } from "@material-ui/core";
-import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   chatItem: {
@@ -33,20 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ChatItem({ conversationId, imageURL, username, setConversationId }) {
-  const [lastMessage, setLastMessage] = useState(null);
+function ChatItem({
+  conversationId,
+  imageURL,
+  username,
+  lastMessage,
+  setConversationId,
+}) {
   const classes = useStyles();
-
-  useEffect(() => {
-    axios
-      .get(`/messages/${conversationId}`)
-      .then((response) =>
-        setLastMessage(
-          response.data.messages[response.data.messages.length - 1]
-        )
-      )
-      .catch((error) => console.log(error));
-  }, [conversationId]);
 
   return (
     <div

@@ -43,26 +43,11 @@ function Chats({ currentUser, setConversationId }) {
   const classes = useStyles();
 
   useEffect(() => {
-    const tempConversations = [];
     axios
       .get(`/conversations/${currentUser._id}`)
-      .then((conversationsResponse) => {
-        conversationsResponse.data.conversations.forEach((conversation) => {
-          axios
-            .get(`/messages/${conversation._id}`)
-            .then((messagesResponse) => {
-              tempConversations.push({
-                conversation: conversation,
-                timestamp:
-                  messagesResponse.data.messages[
-                    messagesResponse.data.messages.length - 1
-                  ]?.timestamp,
-              });
-              setConversations(tempConversations.concat([]));
-            })
-            .catch((error) => console.log(error));
-        });
-      })
+      .then((conversations) =>
+        setConversations(conversations.data.conversations)
+      )
       .catch((error) => console.log(error));
   }, [currentUser._id]);
 
@@ -107,35 +92,38 @@ function Chats({ currentUser, setConversationId }) {
         />
       </form>
       <div className={classes.messagesUsersContainer}>
-        {!showUsers &&
-          conversations
-            .filter((conversation) => conversation.timestamp !== undefined)
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-            .map((conversation) => {
-              return (
-                <ChatItem
-                  key={conversation.conversation._id}
-                  conversationId={conversation.conversation._id}
-                  imgURL=""
-                  username={
-                    conversation.conversation.participants[0]._id ===
-                    currentUser._id
-                      ? conversation.conversation.participants[1].username
-                      : conversation.conversation.participants[0].username
-                  }
-                  setConversationId={setConversationId}
-                />
-              );
-            })}
-        {showUsers &&
-          searchedUsers.map((user) => (
-            <UserItem
-              key={user._id}
-              currentUser={currentUser}
-              user={user}
-              selectUser={(conversationId) => selectUser(conversationId)}
-            />
-          ))}
+        {showUsers
+          ? searchedUsers.map((user) => (
+              <UserItem
+                key={user._id}
+                currentUser={currentUser}
+                user={user}
+                selectUser={(conversationId) => selectUser(conversationId)}
+              />
+            ))
+          : conversations
+              .filter((conversation) => conversation.lastMessage)
+              .sort(
+                (a, b) =>
+                  new Date(b.lastMessage.timestamp) -
+                  new Date(a.lastMessage.timestamp)
+              )
+              .map((conversation) => {
+                return (
+                  <ChatItem
+                    key={conversation._id}
+                    conversationId={conversation._id}
+                    imgURL=""
+                    username={
+                      conversation.participants[0]._id === currentUser._id
+                        ? conversation.participants[1].username
+                        : conversation.participants[0].username
+                    }
+                    lastMessage={conversation.lastMessage}
+                    setConversationId={setConversationId}
+                  />
+                );
+              })}
       </div>
     </div>
   );

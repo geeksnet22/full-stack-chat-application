@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const checkAuth = require("../middleware/check-auth");
 
 const Message = require("../models/message");
+const Conversation = require("../models/conversation");
 
 router.post("/", checkAuth, (req, res, next) => {
   const { conversationId, content, author } = req.body;
@@ -17,12 +18,27 @@ router.post("/", checkAuth, (req, res, next) => {
   message
     .save()
     .then((result) => {
-      res.status(201).json({
-        message: "Create message successful",
-        createMessage: {
-          _id: result._id,
+      Conversation.findOneAndUpdate(
+        {
+          _id: mongoose.Types.ObjectId(conversationId),
         },
-      });
+        { lastMessage: result._id },
+        null,
+        (err, doc) => {
+          if (err)
+            Message.findByIdAndRemove({ id: result._id }, null, (err, doc) => {
+              return res.status(500).json({
+                error: err,
+              });
+            });
+          return res.status(201).json({
+            message: "Create message successfull",
+            createMessage: {
+              _id: result._id,
+            },
+          });
+        }
+      );
     })
     .catch((err) => {
       res.status(500).json({
