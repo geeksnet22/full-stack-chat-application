@@ -50,7 +50,7 @@ function ChatItem({
         setUsername(username);
       }}
     >
-      <Avatar src={imageURL} />
+      <Avatar src={imageURL} alt={username} />
       <div className={classes.textAreaContainer}>
         <div>
           <Typography variant="h5">{username}</Typography>

@@ -32,7 +32,7 @@ function ReceivedMessageItem({ author, imageURL, content, date }) {
   const classes = useStyles();
   return (
     <div className={classes.receivedMessageItem}>
-      <Avatar className={classes.avatar} src={imageURL} />
+      <Avatar className={classes.avatar} src={imageURL} alt={author.username} />
       <div className={classes.textContainer}>
         <div className={classes.userTimestampContainer}>
           <Typography variant="body1">{author.username}</Typography>

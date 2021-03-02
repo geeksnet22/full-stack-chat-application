@@ -38,7 +38,7 @@ function UserItem({ currentUser, user, selectUser }) {
       );
   return (
     <div className={classes.userItem} onClick={handleClick}>
-      <Avatar src={user.imageURL} />
+      <Avatar src={user.imageURL} alt={user.username} />
       <Typography variant="h5">{`\xa0\xa0${user.username}`}</Typography>
     </div>
   );
