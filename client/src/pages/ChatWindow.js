@@ -1,6 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Chats from "./Chats";
 import Messages from "./Messages";
 
